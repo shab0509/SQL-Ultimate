@@ -9,8 +9,8 @@
         - CONCAT
         - LOWER
         - UPPER
-		- TRIM
-		- REPLACE
+	- TRIM
+	- REPLACE
      2. Calculation
         - LEN
      3. Substring Extraction
@@ -42,16 +42,6 @@ FROM customers
 SELECT 
     UPPER(first_name) AS upper_case_name
 FROM customers
-
-/* ============================================================================== 
-   LEN() - String Length & Trimming
-=============================================================================== */
-
--- Calculate the length of each customer's first name
-SELECT 
-    first_name, 
-    LEN(first_name) AS name_length
-FROM customers
 	
 /* ============================================================================== 
    TRIM() - Remove White Spaces
@@ -67,6 +57,29 @@ FROM customers
 WHERE LEN(first_name)  != LEN(TRIM(first_name))
 -- WHERE first_name != TRIM(first_name)
 
+/* ============================================================================== 
+   REPLACE() - Replace or Remove old value with new one
+=============================================================================== */
+-- Remove dashes (-) from a phone number
+SELECT
+'123-456-7890' AS phone,
+REPLACE('123-456-7890', '-', '/') AS clean_phone
+
+-- Replace File Extence from txt to csv
+SELECT
+'report.txt' AS old_filename,
+REPLACE('report.txt', '.txt', '.csv') AS new_filename
+	
+/* ============================================================================== 
+   LEN() - String Length & Trimming
+=============================================================================== */
+
+-- Calculate the length of each customer's first name
+SELECT 
+    first_name, 
+    LEN(first_name) AS name_length
+FROM customers
+	
 /* ============================================================================== 
    LEFT() & RIGHT() - Substring Extraction
 =============================================================================== */
@@ -92,19 +105,6 @@ SELECT
     first_name,
     SUBSTRING(TRIM(first_name), 2, LEN(first_name)) AS trimmed_name
 FROM customers	
-	
-/* ============================================================================== 
-   REPLACE() - Replace or Remove old value with new one
-=============================================================================== */
--- Remove dashes (-) from a phone number
-SELECT
-'123-456-7890' AS phone,
-REPLACE('123-456-7890', '-', '/') AS clean_phone
-
--- Replace File Extence from txt to csv
-SELECT
-'report.txt' AS old_filename,
-REPLACE('report.txt', '.txt', '.csv') AS new_filename
 
 /* ==============================================================================
    NESTING FUNCTIONS
