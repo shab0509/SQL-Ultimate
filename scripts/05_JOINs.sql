@@ -32,26 +32,27 @@ SELECT * FROM orders;
 -- INNER JOIN
 /* Get all customers along with their orders, 
    but only for customers who have placed an order */
-SELECT
-    c.id,
-    c.first_name,
-    o.order_id,
+SELECT   
+   c.customerid,
+    c.firstname,
+    o.orderid,
     o.sales
 FROM customers AS c
 INNER JOIN orders AS o
-ON c.id = o.customer_id
+ON c.customerid = o.customerid
+
 
 -- LEFT JOIN
 /* Get all customers along with their orders, 
    including those without orders */
 SELECT
-    c.id,
-    c.first_name,
-    o.order_id,
+    c.customerid,
+    c.firstname,
+    o.orderid,
     o.sales
 FROM customers AS c
 LEFT JOIN orders AS o
-ON c.id = o.customer_id
+ON c.customerid = o.customerid
 
 -- RIGHT JOIN
 /* Get all customers along with their orders, 
