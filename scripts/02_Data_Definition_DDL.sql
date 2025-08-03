@@ -8,6 +8,15 @@
      1. CREATE - Creating Tables
      2. ALTER - Modifying Table Structure
      3. DROP - Removing Tables
+     
+     
+   Alter table :  
+  > Drop Col
+  > Rename Col
+  > Drop primary key
+  > Add or Drop index
+  > Modify Col type 
+  
 =================================================================================
 */
 

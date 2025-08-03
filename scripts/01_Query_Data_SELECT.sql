@@ -48,7 +48,7 @@ FROM orders
 
 -- Retrieve each customer's name, country, and score.
 SELECT 
-    first_name,
+    firstname,
     country, 
     score
 FROM customers
@@ -69,7 +69,7 @@ WHERE country = 'Germany'
 
 -- Retrieve the name and country of customers from Germany
 SELECT
-    first_name,
+    firstname,
     country
 FROM customers
 WHERE country = 'Germany'
@@ -88,7 +88,7 @@ ORDER BY score DESC
    sort the results by the lowest score first. */
 SELECT *
 FROM customers
-ORDER BY score ASC
+ORDER BY score ASC 
 
 /* Retrieve all customers and 
    sort the results by the country. */
@@ -106,7 +106,7 @@ ORDER BY country ASC, score DESC
    whose score is not equal to 0
    and sort the results by the highest score first. */
 SELECT
-    first_name,
+    firstname,
     country,
     score
 FROM customers
@@ -124,11 +124,11 @@ SELECT
 FROM customers
 GROUP BY country
 
-/* This will not work because 'first_name' is neither part of the GROUP BY 
+/* This will not work because 'firstname' is neither part of the GROUP BY 
    nor wrapped in an aggregate function. SQL doesn't know how to handle this column. */
 SELECT 
     country,
-    first_name,
+    firstname,
     SUM(score) AS total_score
 FROM customers
 GROUP BY country
@@ -137,7 +137,7 @@ GROUP BY country
 SELECT 
     country,
     SUM(score) AS total_score,
-    COUNT(id) AS total_customers
+    COUNT(customerid) AS total_customers
 FROM customers
 GROUP BY country
 
@@ -178,23 +178,23 @@ FROM customers
 =============================================================================== */
 
 -- Retrieve only 3 Customers
-SELECT TOP 3 *
-FROM customers
+SELECT  *
+FROM customers limit 3
 
 -- Retrieve the Top 3 Customers with the Highest Scores
-SELECT TOP 3 *
+SELECT *
 FROM customers
-ORDER BY score DESC
+ORDER BY score DESC limit 3
 
 -- Retrieve the Lowest 2 Customers based on the score
-SELECT TOP 2 *
+SELECT *
 FROM customers
-ORDER BY score ASC
+ORDER BY score ASC limit 2
 
 -- Get the Two Most Recent Orders
-SELECT TOP 2 *
+SELECT *
 FROM orders
-ORDER BY order_date DESC
+ORDER BY orderdate DESC
 
 /* ==============================================================================
    All Together
@@ -229,7 +229,7 @@ SELECT 'Hello' AS static_string;
 
 -- Assign a constant value to a column in a query
 SELECT
-    id,
-    first_name,
+    customerid,
+    firstname,
     'New Customer' AS customer_type
 FROM customers;
