@@ -26,17 +26,17 @@
    Calculate the Total Sales Across All Orders 
 */
 SELECT
-    SUM(Sales) AS Total_Sales
-FROM Sales.Orders;
+    SUM(sales) AS Total_Sales
+FROM orders;
 
 /* TASK 2: 
    Calculate the Total Sales for Each Product 
 */
 SELECT 
-    ProductID,
-    SUM(Sales) AS Total_Sales
-FROM Sales.Orders
-GROUP BY ProductID;
+    productid,
+    SUM(sales) AS Total_Sales
+FROM orders
+GROUP BY productid;
 
 /* ==============================================================================
    SQL WINDOW FUNCTIONS | OVER CLAUSE
@@ -47,12 +47,12 @@ GROUP BY ProductID;
    additionally providing details such as OrderID and OrderDate 
 */
 SELECT
-    OrderID,
-    OrderDate,
-    ProductID,
-    Sales,
-    SUM(Sales) OVER () AS Total_Sales
-FROM Sales.Orders;
+    orderid,
+    orderdate,
+    productid,
+    sales,
+    SUM(sales) OVER () AS Total_Sales
+FROM orders;
 
 /* ==============================================================================
    SQL WINDOW FUNCTIONS | PARTITION CLAUSE
@@ -63,29 +63,31 @@ FROM Sales.Orders;
    additionally providing details such as OrderID and OrderDate 
 */
 SELECT
-    OrderID,
-    OrderDate,
-    ProductID,
-    Sales,
-    SUM(Sales) OVER () AS Total_Sales,
-    SUM(Sales) OVER (PARTITION BY ProductID) AS Sales_By_Product
-FROM Sales.Orders;
+    orderid,
+    orderdate,
+    productid,
+    sales,
+    SUM(sales) OVER () AS Total_Sales,
+    SUM(sales) OVER (PARTITION BY productid) AS Sales_By_Product
+FROM orders
+order by productid desc
 
 /* TASK 5: 
    Find the total sales across all orders, for each product,
    and for each combination of product and order status,
    additionally providing details such as OrderID and OrderDate 
 */
+
 SELECT
-    OrderID,
-    OrderDate,
-    ProductID,
-    OrderStatus,
-    Sales,
-    SUM(Sales) OVER () AS Total_Sales,
-    SUM(Sales) OVER (PARTITION BY ProductID) AS Sales_By_Product,
-    SUM(Sales) OVER (PARTITION BY ProductID, OrderStatus) AS Sales_By_Product_Status
-FROM Sales.Orders;
+    orderid,
+    orderdate,
+    productid,
+    sales,
+    orderstatus,
+    SUM(sales) OVER () AS Total_Sales,
+    SUM(sales) OVER (PARTITION BY productid) AS Sales_By_Product,
+    SUM(sales) OVER (PARTITION BY productid, orderstatus) AS Sales_By_Product_Status
+FROM orders;
 
 /* ==============================================================================
    SQL WINDOW FUNCTIONS | ORDER CLAUSE
@@ -94,11 +96,11 @@ FROM Sales.Orders;
 /* TASK 6: 
    Rank each order by Sales from highest to lowest */
 SELECT
-    OrderID,
-    OrderDate,
-    Sales,
-    RANK() OVER (ORDER BY Sales DESC) AS Rank_Sales
-FROM Sales.Orders;
+    orderid,
+    orderdate,
+    sales,
+    RANK() OVER (ORDER BY sales DESC) AS Rank_Sales
+FROM orders;
 
 /* ==============================================================================
    SQL WINDOW FUNCTIONS | FRAME CLAUSE
@@ -108,21 +110,24 @@ FROM Sales.Orders;
    Calculate Total Sales by Order Status for current and next two orders 
 */
 SELECT
-    OrderID,
-    OrderDate,
-    ProductID,
-    OrderStatus,
-    Sales,
-    SUM(Sales) OVER (
-        PARTITION BY OrderStatus 
-        ORDER BY OrderDate 
+    orderid,
+    orderdate,
+    productid,
+    orderstatus,
+    sales,
+    SUM(sales) OVER (
+        PARTITION BY orderstatus 
+        ORDER BY orderdate 
         ROWS BETWEEN CURRENT ROW AND 2 FOLLOWING
     ) AS Total_Sales
-FROM Sales.Orders;
+FROM orders;
 
 /* TASK 8: 
    Calculate Total Sales by Order Status for current and previous two orders 
 */
+
+
+
 SELECT
     OrderID,
     OrderDate,
@@ -156,17 +161,17 @@ FROM Sales.Orders;
    Calculate cumulative Total Sales by Order Status up to the current order 
 */
 SELECT
-    OrderID,
-    OrderDate,
-    ProductID,
-    OrderStatus,
-    Sales,
-    SUM(Sales) OVER (
-        PARTITION BY OrderStatus 
-        ORDER BY OrderDate 
+    orderid,
+    orderdate,
+    productid,
+    orderstatus,
+    sales,
+    SUM(sales) OVER (
+        PARTITION BY orderstatus 
+        ORDER BY orderdate 
         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
     ) AS Total_Sales
-FROM Sales.Orders;
+FROM orders;
 
 /* TASK 11: 
    Calculate cumulative Total Sales by Order Status from the start to the current row 
@@ -211,7 +216,7 @@ SELECT
     OrderStatus,
     Sales,
     SUM(SUM(Sales) OVER (PARTITION BY OrderStatus)) OVER (PARTITION BY OrderStatus) AS Total_Sales  -- Invalid nesting
-FROM Sales.Orders;
+FROM orders;
 
 /* ==============================================================================
    SQL WINDOW FUNCTIONS | GROUP BY
@@ -221,8 +226,11 @@ FROM Sales.Orders;
    Rank customers by their total sales 
 */
 SELECT
-    CustomerID,
-    SUM(Sales) AS Total_Sales,
+    customerid,
+    SUM(sales) AS Total_Sales,
     RANK() OVER (ORDER BY SUM(Sales) DESC) AS Rank_Customers
-FROM Sales.Orders
-GROUP BY CustomerID;
+FROM orders
+GROUP BY customerid;
+
+
+

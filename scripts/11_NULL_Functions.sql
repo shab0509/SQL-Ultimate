@@ -25,13 +25,18 @@
    Find the average scores of the customers.
    Uses COALESCE to replace NULL Score with 0.
 */
+
+Select * FROM customers;
+
 SELECT
     CustomerID,
+    country,
     Score,
-    COALESCE(Score, 0) AS Score2,
-    AVG(Score) OVER () AS AvgScores,
+    COALESCE(Score, 0) AS Score_new,
+    AVG(Score) OVER (partition by country) AS AvgScores1,
     AVG(COALESCE(Score, 0)) OVER () AS AvgScores2
-FROM Sales.Customers;
+FROM customers
+order by country;
 
 /* ==============================================================================
    HANDLE NULL - MATHEMATICAL OPERATORS
@@ -41,14 +46,18 @@ FROM Sales.Customers;
    Display the full name of customers in a single field by merging their
    first and last names, and add 10 bonus points to each customer's score.
 */
+
+Select coalesce(score) from customers
+
 SELECT
-    CustomerID,
-    FirstName,
-    LastName,
-    FirstName + ' ' + COALESCE(LastName, '') AS FullName,
+    customerid,
+    firstname,
+    lastname,
+    #CONCAT(firstname + ' ' + COALESCE(lastname, '') )AS FullName,
+    CONCAT(firstname,' ',(coalesce(lastname,' '))) AS FullName,
     Score,
-    COALESCE(Score, 0) + 10 AS ScoreWithBonus
-FROM Sales.Customers;
+    COALESCE(Score, 0)  AS ScoreWithBonus
+	from customers
 
 /* ==============================================================================
    HANDLE NULL - SORTING DATA
@@ -61,8 +70,9 @@ FROM Sales.Customers;
 SELECT
     CustomerID,
     Score
-FROM Sales.Customers
-ORDER BY CASE WHEN Score IS NULL THEN 1 ELSE 0 END, Score;
+FROM customers
+ORDER BY 
+	CASE WHEN Score IS NULL THEN 1 ELSE 0 END,  Score;
 
 /* ==============================================================================
    NULLIF - DIVISION BY ZERO
@@ -76,8 +86,8 @@ SELECT
     OrderID,
     Sales,
     Quantity,
-    Sales / NULLIF(Quantity, 0) AS Price
-FROM Sales.Orders;
+    Sales/NULLIF(Quantity, 0) AS Quantity_new
+FROM orders;
 
 /* ==============================================================================
    IS NULL - IS NOT NULL
@@ -87,14 +97,14 @@ FROM Sales.Orders;
    Identify the customers who have no scores 
 */
 SELECT *
-FROM Sales.Customers
+FROM customers
 WHERE Score IS NULL;
 
 /* TASK 6: 
    Identify the customers who have scores 
 */
 SELECT *
-FROM Sales.Customers
+FROM customers
 WHERE Score IS NOT NULL;
 
 /* ==============================================================================
@@ -106,11 +116,12 @@ WHERE Score IS NOT NULL;
 */
 SELECT
     c.*,
-    o.OrderID
-FROM Sales.Customers AS c
-LEFT JOIN Sales.Orders AS o
-    ON c.CustomerID = o.CustomerID
-WHERE o.CustomerID IS NULL;
+    o.orderid,
+    o.customerid
+FROM customers AS c
+LEFT JOIN orders AS o
+    ON c.customerid = o.customerid
+WHERE o.customerid IS NULL;
 
 /* ==============================================================================
    NULLs vs EMPTY STRING vs BLANK SPACES

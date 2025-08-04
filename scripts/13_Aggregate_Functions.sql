@@ -44,7 +44,9 @@ FROM customers
    GROUPED AGGREGATIONS - GROUP BY
 =============================================================================== */
 
--- Find the number of orders, total sales, average sales, highest sales, and lowest sales per customer
+-- Find the number of orders, total sales, average sales, highest sales
+-- and lowest sales per customer
+
 SELECT
     customer_id,
     COUNT(*) AS total_orders,
