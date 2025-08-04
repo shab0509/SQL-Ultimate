@@ -22,68 +22,70 @@
    The data types of columns in each query should match.
 */
 SELECT
-    FirstName,
-    LastName,
-    Country
-FROM Sales.Customers
+    Firstname,
+    lastname ,
+    country
+FROM Customers
 UNION
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Employees;
+    firstname,
+    lastName
+FROM employees;
 
 /* RULE: Data Types (Example)
    The data types of columns in each query should match.
 */
+Select * FROM employees
+
 SELECT
-    CustomerID,
-    LastName
-FROM Sales.Customers
+    customerID,
+    lastname
+FROM customers
 UNION
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Employees;
+    firstname,
+    lastname
+FROM employees;
 
 /* RULE: Column Order
    The order of the columns in each query must be the same.
 */
 SELECT
-    LastName,
-    CustomerID
-FROM Sales.Customers
+    lastname,
+    customerid
+FROM customers
 UNION
 SELECT
-    EmployeeID,
-    LastName
-FROM Sales.Employees;
+    employeeid,
+    lastname
+FROM employees;
 
 /* RULE: Column Aliases
    The column names in the result set are determined by the column names
    specified in the first SELECT statement.
 */
 SELECT
-    CustomerID AS ID,
-    LastName AS Last_Name
-FROM Sales.Customers
+    customerid AS ID,
+    lastname AS Last_Name
+FROM  customers
 UNION
 SELECT
-    EmployeeID,
-    LastName
-FROM Sales.Employees;
+    employeeid,
+    lastname
+FROM employees;
 
 /* RULE: Correct Columns
    Ensure that the correct columns are used to maintain data consistency.
 */
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Customers
+    firstname,
+    lastname
+FROM customers
 UNION
 SELECT
-    LastName,
-    FirstName
-FROM Sales.Employees;
+    lastname,
+    firstname
+FROM employees;
 
 /* ==============================================================================
    SETS: UNION, UNION ALL, EXCEPT, INTERSECT
@@ -93,53 +95,56 @@ FROM Sales.Employees;
    Combine the data from Employees and Customers into one table using UNION 
 */
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Customers
+    firstname,
+    lastname
+FROM customers
 UNION
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Employees;
+    firstname,
+    lastname
+FROM employees
+order by firstname;
 
 /* TASK 2: 
    Combine the data from Employees and Customers into one table, including duplicates, using UNION ALL 
 */
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Customers
+    firstname,
+    lastname
+FROM customers
 UNION ALL
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Employees;
+    firstname,
+    lastname
+FROM employees
+order by firstname;
 
 /* TASK 3: 
    Find employees who are NOT customers using EXCEPT 
 */
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Employees
+    firstname,
+    lastname
+FROM employees
 EXCEPT
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Customers;
+    firstname,
+    lastname
+FROM customers;
 
 /* TASK 4: 
    Find employees who are also customers using INTERSECT 
 */
+
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Employees
+    firstname,
+    lastname
+FROM employees
 INTERSECT
 SELECT
-    FirstName,
-    LastName
-FROM Sales.Customers;
+    firstname,
+    lastname
+FROM customers;
 
 /* TASK 5: 
    Combine order data from Orders and OrdersArchive into one report without duplicates 
@@ -158,7 +163,7 @@ SELECT
     Quantity,
     Sales,
     CreationTime
-FROM Sales.Orders
+FROM orders
 UNION
 SELECT
     'OrdersArchive' AS SourceTable,
@@ -174,5 +179,5 @@ SELECT
     Quantity,
     Sales,
     CreationTime
-FROM Sales.OrdersArchive
-ORDER BY OrderID;
+FROm orders_archive
+ORDER BY orderid;

@@ -31,8 +31,8 @@ SELECT
     OrderID,
     CreationTime,
     '2025-08-20' AS HardCoded,
-    GETDATE() AS Today
-FROM Sales.Orders;
+    CURRENT_DATE() AS Today
+FROM orders;
 
 /* ==============================================================================
    DATE PART EXTRACTIONS
@@ -44,28 +44,33 @@ FROM Sales.Orders;
    YEAR, MONTH, and DAY.
 */
 SELECT
-    OrderID,
+    orderid,
     CreationTime,
     -- DATETRUNC Examples
-    DATETRUNC(year, CreationTime) AS Year_dt,
-    DATETRUNC(day, CreationTime) AS Day_dt,
-    DATETRUNC(minute, CreationTime) AS Minute_dt,
+    YEAR(CreationTime) AS Year_dt,
+    DAY(CreationTime) AS Day_dt,
+    MINUTE(CreationTime) AS Minute_dt,
+  
     -- DATENAME Examples
-    DATENAME(month, CreationTime) AS Month_dn,
-    DATENAME(weekday, CreationTime) AS Weekday_dn,
-    DATENAME(day, CreationTime) AS Day_dn,
-    DATENAME(year, CreationTime) AS Year_dn,
+    month(CreationTime) AS Month_dn,
+    weekday(CreationTime) AS Weekday_dn,
+    day(CreationTime) AS Day_dn,
+    year(CreationTime) AS Year_dn,
+    
+    
     -- DATEPART Examples
-    DATEPART(year, CreationTime) AS Year_dp,
-    DATEPART(month, CreationTime) AS Month_dp,
-    DATEPART(day, CreationTime) AS Day_dp,
-    DATEPART(hour, CreationTime) AS Hour_dp,
-    DATEPART(quarter, CreationTime) AS Quarter_dp,
-    DATEPART(week, CreationTime) AS Week_dp,
-    YEAR(CreationTime) AS Year,
-    MONTH(CreationTime) AS Month,
-    DAY(CreationTime) AS Day
-FROM Sales.Orders;
+	year(CreationTime) AS Year_dp, 
+	month(CreationTime) AS Month_dp,
+	day(CreationTime) AS Day_dp,
+	hour(CreationTime) AS Hour_dp,
+	quarter(CreationTime) AS Quarter_dp,
+	week(CreationTime) AS Week_dp,
+	YEAR(CreationTime) AS Year,
+	MONTH(CreationTime) AS Month,
+	DAY(CreationTime) AS Day
+	FROM orders;
+ 
+
 
 /* ==============================================================================
    DATETRUNC() DATA AGGREGATION
@@ -75,10 +80,10 @@ FROM Sales.Orders;
    Aggregate orders by year using DATETRUNC on CreationTime.
 */
 SELECT
-    DATETRUNC(year, CreationTime) AS Creation,
+    year(CreationTime) AS Creation,
     COUNT(*) AS OrderCount
-FROM Sales.Orders
-GROUP BY DATETRUNC(year, CreationTime);
+FROM orders
+GROUP BY Creation;
 
 /* ==============================================================================
    EOMONTH()
@@ -90,8 +95,8 @@ GROUP BY DATETRUNC(year, CreationTime);
 SELECT
     OrderID,
     CreationTime,
-    EOMONTH(CreationTime) AS EndOfMonth
-FROM Sales.Orders;
+    endofmonth(CreationTime) AS EndOfMonth
+FROM orders;
 
 /* ==============================================================================
    DATE PARTS | USE CASES
@@ -103,8 +108,8 @@ FROM Sales.Orders;
 SELECT 
     YEAR(OrderDate) AS OrderYear, 
     COUNT(*) AS TotalOrders
-FROM Sales.Orders
-GROUP BY YEAR(OrderDate);
+FROM orders
+GROUP BY OrderYear;
 
 /* TASK 6:
    How many orders were placed each month?
@@ -112,24 +117,24 @@ GROUP BY YEAR(OrderDate);
 SELECT 
     MONTH(OrderDate) AS OrderMonth, 
     COUNT(*) AS TotalOrders
-FROM Sales.Orders
-GROUP BY MONTH(OrderDate);
+FROM orders
+GROUP BY OrderMonth;
 
 /* TASK 7:
    How many orders were placed each month (using friendly month names)?
 */
 SELECT 
-    DATENAME(month, OrderDate) AS OrderMonth, 
+    month(OrderDate) AS OrderMonth, 
     COUNT(*) AS TotalOrders
-FROM Sales.Orders
-GROUP BY DATENAME(month, OrderDate);
+FROM orders
+GROUP BY OrderMonth;
 
 /* TASK 8:
    Show all orders that were placed during the month of February.
 */
 SELECT
     *
-FROM Sales.Orders
+FROM orders
 WHERE MONTH(OrderDate) = 2;
 
 /* ==============================================================================
@@ -150,7 +155,7 @@ SELECT
     FORMAT(CreationTime, 'MM') AS MM,
     FORMAT(CreationTime, 'MMM') AS MMM,
     FORMAT(CreationTime, 'MMMM') AS MMMM
-FROM Sales.Orders;
+FROM orders;
 
 /* TASK 10:
    Display CreationTime using a custom format:
@@ -160,9 +165,9 @@ SELECT
     OrderID,
     CreationTime,
     'Day ' + FORMAT(CreationTime, 'ddd MMM') +
-    ' Q' + DATENAME(quarter, CreationTime) + ' ' +
+    ' Q' + (quarter(CreationTime)) + ' ' +
     FORMAT(CreationTime, 'yyyy hh:mm:ss tt') AS CustomFormat
-FROM Sales.Orders;
+FROM orders;
 
 /* TASK 11:
    How many orders were placed each year, formatted by month and year (e.g., "Jan 25")?
@@ -170,7 +175,7 @@ FROM Sales.Orders;
 SELECT
     FORMAT(CreationTime, 'MMM yy') AS OrderDate,
     COUNT(*) AS TotalOrders
-FROM Sales.Orders
+FROM orders
 GROUP BY FORMAT(CreationTime, 'MMM yy');
 
 /* ==============================================================================
@@ -187,7 +192,7 @@ SELECT
     CONVERT(DATE, CreationTime) AS [Datetime to Date CONVERT],
     CONVERT(VARCHAR, CreationTime, 32) AS [USA Std. Style:32],
     CONVERT(VARCHAR, CreationTime, 34) AS [EURO Std. Style:34]
-FROM Sales.Orders;
+FROM orders;
 
 /* ==============================================================================
    CAST()
@@ -203,7 +208,7 @@ SELECT
     CAST('2025-08-20' AS DATETIME2) AS [String to Datetime],
     CreationTime,
     CAST(CreationTime AS DATE) AS [Datetime to Date]
-FROM Sales.Orders;
+FROM orders;
 
 /* ==============================================================================
    DATEADD() / DATEDIFF()
@@ -215,38 +220,40 @@ FROM Sales.Orders;
 SELECT
     OrderID,
     OrderDate,
-    DATEADD(day, -10, OrderDate) AS TenDaysBefore,
-    DATEADD(month, 3, OrderDate) AS ThreeMonthsLater,
-    DATEADD(year, 2, OrderDate) AS TwoYearsLater
-FROM Sales.Orders;
+    DATE_ADD(OrderDate,  INTERVAL 10 DAY) AS TenDaysBefore,
+    DATE_ADD(OrderDate,INTERVAL 90 DAY) AS ThreeMonthsLater,
+    DATE_ADD(OrderDate,INTERVAL 730 DAY) AS TwoYearsLater
+FROM orders;
 
 /* TASK 15:
    Calculate the age of employees.
 */
 SELECT
-    EmployeeID,
-    BirthDate,
-    DATEDIFF(year, BirthDate, GETDATE()) AS Age
-FROM Sales.Employees;
+    employeeid,
+    birthdate,
+    Round((DATEDIFF( CURRENT_DATE(),birthdate) )/365 )AS Age
+FROM employees;
 
 /* TASK 16:
    Find the average shipping duration in days for each month.
 */
+
+Select * from orders
 SELECT
-    MONTH(OrderDate) AS OrderMonth,
-    AVG(DATEDIFF(day, OrderDate, ShipDate)) AS AvgShip
-FROM Sales.Orders
-GROUP BY MONTH(OrderDate);
+    MONTH(orderdate) AS OrderMonth,
+    AVG(DATEDIFF(shipdate,orderdate)) AS AvgShip
+FROM orders
+GROUP BY MONTH(orderdate);
 
 /* TASK 17:
    Time Gap Analysis: Find the number of days between each order and the previous order.
 */
 SELECT
-    OrderID,
-    OrderDate AS CurrentOrderDate,
-    LAG(OrderDate) OVER (ORDER BY OrderDate) AS PreviousOrderDate,
-    DATEDIFF(day, LAG(OrderDate) OVER (ORDER BY OrderDate), OrderDate) AS NrOfDays
-FROM Sales.Orders;
+    orderid,
+    orderdate AS CurrentOrderDate,
+    LAG(orderdate) OVER (ORDER BY orderdate) AS LAG_PreviousOrderDate,
+    DATEDIFF(LAG_PreviousOrderDate, orderdate) OVER () AS NrOfDays
+FROM orders;
 
 /* ==============================================================================
    ISDATE()

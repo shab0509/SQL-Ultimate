@@ -29,9 +29,13 @@
 SELECT * FROM customers;
 SELECT * FROM orders;
 
+Select count(*) from customers ;
+Select count(*) from orders;
+
 -- INNER JOIN
 /* Get all customers along with their orders, 
    but only for customers who have placed an order */
+
 SELECT   
    c.customerid,
     c.firstname,
@@ -57,39 +61,40 @@ ON c.customerid = o.customerid
 -- RIGHT JOIN
 /* Get all customers along with their orders, 
    including orders without matching customers */
+
 SELECT
-    c.id,
-    c.first_name,
-    o.order_id,
-    o.customer_id,
+    c.customerid,
+    c.firstname,
+    o.orderid,
+    o.customerid,
     o.sales
 FROM customers AS c 
 RIGHT JOIN orders AS o 
-ON c.id = o.customer_id
+ON c.customerid = o.customerid
 
 -- Alternative to RIGHT JOIN using LEFT JOIN
 /* Get all customers along with their orders, 
    including orders without matching customers */
 SELECT
-    c.id,
-    c.first_name,
-    o.order_id,
+    c.customerid,
+    c.firstname,
+    o.orderid,
     o.sales
 FROM orders AS o 
 LEFT JOIN customers AS c
-ON c.id = o.customer_id
+ON c.customerid = o.customerid
 
 -- FULL JOIN
 /* Get all customers and all orders, even if there’s no match */
 SELECT
-    c.id,
-    c.first_name,
-    o.order_id,
-    o.customer_id,
+    c.customerid,
+    c.firstname,
+    o.orderid,
+    o.customerid,
     o.sales
 FROM customers AS c 
 FULL JOIN orders AS o 
-ON c.id = o.customer_id
+ON c.customerid = o.customerid
 
 /* ============================================================================== 
    ADVANCED JOINS
@@ -100,24 +105,24 @@ ON c.id = o.customer_id
 SELECT *
 FROM customers AS c
 LEFT JOIN orders AS o
-ON c.id = o.customer_id
-WHERE o.customer_id IS NULL
+ON c.customerid = o.customerid
+WHERE o.customerid IS NULL
 
 -- RIGHT ANTI JOIN
 /* Get all orders without matching customers */
 SELECT *
 FROM customers AS c
 RIGHT JOIN orders AS o
-ON c.id = o.customer_id
-WHERE c.id IS NULL
+ON c.customerid = o.customerid
+WHERE c.customerid IS NULL
 
 -- Alternative to RIGHT ANTI JOIN using LEFT JOIN
 /* Get all orders without matching customers */
 SELECT *
 FROM orders AS o 
 LEFT JOIN customers AS c
-ON c.id = o.customer_id
-WHERE c.id IS NULL
+ON c.customerid = o.customerid
+WHERE c.customerid IS NULL
 
 -- Alternative to INNER JOIN using LEFT JOIN
 /* Get all customers along with their orders, 
@@ -125,21 +130,21 @@ WHERE c.id IS NULL
 SELECT *
 FROM customers AS c
 LEFT JOIN orders AS o
-ON c.id = o.customer_id
-WHERE o.customer_id IS NOT NULL
+ON c.customerid = o.customerid
+WHERE o.customerid IS NOT NULL
 
 -- FULL ANTI JOIN
 /* Find customers without orders and orders without customers */
 SELECT
-    c.id,
-    c.first_name,
-    o.order_id,
-    o.customer_id,
+    c.customerid,
+    c.firstname,
+    o.orderid,
+    o.customerid,
     o.sales
 FROM customers AS c 
 FULL JOIN orders AS o 
-ON c.id = o.customer_id
-WHERE o.customer_id IS NULL OR c.id IS NULL
+ON c.customerid = o.customerid
+WHERE o.customerid IS NULL OR c.customerid IS NULL
 
 -- CROSS JOIN
 /* Generate all possible combinations of customers and orders */
@@ -162,7 +167,7 @@ CROSS JOIN orders
 
 USE SalesDB
 
-SELECT 
+ SELECT 
     o.OrderID,
     o.Sales,
     c.FirstName AS CustomerFirstName,
@@ -171,10 +176,10 @@ SELECT
     p.Price,
     e.FirstName AS EmployeeFirstName,
     e.LastName AS EmployeeLastName
-FROM Sales.Orders AS o
-LEFT JOIN Sales.Customers AS c
+FROM orders AS o
+LEFT JOIN customers AS c
 ON o.CustomerID = c.CustomerID
-LEFT JOIN Sales.Products AS p
+LEFT JOIN Products AS p
 ON o.ProductID = p.ProductID
-LEFT JOIN Sales.Employees AS e
+LEFT JOIN Employees AS e
 ON o.SalesPersonID = e.EmployeeID

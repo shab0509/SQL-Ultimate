@@ -26,7 +26,7 @@
 
 -- Concatenate first name and country into one column
 SELECT 
-    CONCAT(first_name, '-', country) AS full_info
+    CONCAT(firstname, '-', country) AS full_info
 FROM customers
 
 /* ============================================================================== 
@@ -35,12 +35,12 @@ FROM customers
 
 -- Convert the first name to lowercase
 SELECT 
-    LOWER(first_name) AS lower_case_name
+    LOWER(firstname) AS lower_case_name
 FROM customers
 
 -- Convert the first name to uppercase
 SELECT 
-    UPPER(first_name) AS upper_case_name
+    UPPER(firstname) AS upper_case_name
 FROM customers
 	
 /* ============================================================================== 
@@ -48,14 +48,15 @@ FROM customers
 =============================================================================== */
 
 -- Find customers whose first name contains leading or trailing spaces
+
 SELECT 
-    first_name,
-	LEN(first_name) len_name,
-	LEN(TRIM(first_name)) len_trim_name,
-	LEN(first_name) - LEN(TRIM(first_name)) flag
+    firstname,
+	length(firstname) len_name,
+	length(TRIM(firstname)) len_trim_name,
+	length(firstname) - length(TRIM(firstname)) flag
 FROM customers
-WHERE LEN(first_name)  != LEN(TRIM(first_name))
--- WHERE first_name != TRIM(first_name)
+WHERE length(firstname)  != length(TRIM(firstname))
+-- WHERE firstname != TRIM(firstname)
 
 /* ============================================================================== 
    REPLACE() - Replace or Remove old value with new one
@@ -76,8 +77,8 @@ REPLACE('report.txt', '.txt', '.csv') AS new_filename
 
 -- Calculate the length of each customer's first name
 SELECT 
-    first_name, 
-    LEN(first_name) AS name_length
+    firstname, 
+    length(firstname) AS name_length
 FROM customers
 	
 /* ============================================================================== 
@@ -86,14 +87,14 @@ FROM customers
 
 -- Retrieve the first two characters of each first name
 SELECT 
-    first_name,
-    LEFT(TRIM(first_name), 2) AS first_2_chars
+    firstname,
+    LEFT(TRIM(firstname), 2) AS first_2_chars
 FROM customers
 
 -- Retrieve the last two characters of each first name
 SELECT 
-    first_name,
-    RIGHT(first_name, 2) AS last_2_chars
+    firstname,
+    RIGHT(firstname, 2) AS last_2_chars
 FROM customers
 	
 /* ============================================================================== 
@@ -102,8 +103,8 @@ FROM customers
 
 -- Retrieve a list of customers' first names after removing the first character
 SELECT 
-    first_name,
-    SUBSTRING(TRIM(first_name), 2, LEN(first_name)) AS trimmed_name
+    firstname,
+    substr(TRIM(firstname), 2, length(firstname)) AS trimmed_name
 FROM customers	
 
 /* ==============================================================================
@@ -112,6 +113,6 @@ FROM customers
 
 -- Nesting
 SELECT
-first_name, 
-UPPER(LOWER(first_name)) AS nesting
+firstname, 
+UPPER(LOWER(firstname)) AS nesting
 FROM customers
