@@ -1,0 +1,173 @@
+
+SQL window functions are tools that help analyze data in different ways. 
+From computing running totals and moving averages, 
+comparing data within specific subsets, and identifying top performers, 
+to achieving intricate ranking and partitioning, 
+these functions empower us to extract deeper insights from our data – and accomplish 
+complex tasks easily.
+
+SQL window functions offer a versatile toolkit for enhanced data analysis. 
+This toolkit includes:
+
+1. ROW_NUMBER(), RANK(), DENSE_RANK(), and NTILE() for ranking data.
+2. SUM(), AVG(), COUNT(), MAX(), and MIN() for aggregations.
+3. LEAD() and LAG() for comparing data across rows.
+4. FIRST_VALUE() and LAST_VALUE() for extracting boundary values.
+
+Furthermore, the OVER() clause enables precise data partitioning and
+ordering within these functions, 
+enabling users to perform complex calculations on defined subsets of data.
+
+
+🔹 Common Types of Window Functions I’ve worked on:
+Category            Function              Description
+----------------------------------------------------------------------------
+Ranking             ROW_NUMBER()          Unique row number per partition/order
+                    RANK()                Like ROW_NUMBER, but ties get same rank with gaps
+                    DENSE_RANK()          Like RANK, but no gaps
+                    NTILE(n)              Divides rows into n equal buckets
+
+Aggregate           SUM()                 Over a window of rows      
+                    AVG()                 Over a window of rows
+                    MIN()                 Over a window of rows
+                    MAX()                 Over a window of rows
+                    COUNT()               Over a window of rows
+
+Value-related       LEAD()                Accesses value of next row
+                    LAG()                 Accesses value of previous row
+                    FIRST_VALUE()         Gets the first value in the window
+                    LAST_VALUE()          Gets the last value in the window
+
+Cumulative/Running SUM(col) OVER(ORDER BY col) Running totals, moving averages
+Totals
+
+Difference Calculations    col - LAG(col)  Previous-to-current delta
+
+
+#New Topic 
+--------------------------
+UNBOUNDED PRECEDING and UNBOUNDED FOLLOWING are keywords used
+in SQL window frames to define the range of rows the window function
+should operate on.
+
+They appear inside the OVER (... ROWS BETWEEN ... AND ...) clause in window
+functions.
+
+ 
+Keyword                                    Meaning
+------------------------------------------------------------------------------------------------------
+1. UNBOUNDED PRECEDING                     Start the window frame from the first row in the partition
+2. CURRENT ROW                             The current row being processed
+3. UNBOUNDED FOLLOWING                     End the window frame at the last row in the partition
+
+
+
+#Sample Queries for Practice:
+
+ CREATE TABLE emp_dept (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(50),
+    department VARCHAR(50),
+    salary DECIMAL(10,2)
+);
+
+
+INSERT INTO emp_dept (employee_id, employee_name, department, salary) VALUES
+(1, 'Alice', 'IT', 6000),
+(2, 'Bob', 'IT', 5000),
+(3, 'Charlie', 'IT', 7000),
+(4, 'David', 'HR', 4500),
+(5, 'Eva', 'HR', 5500),
+(6, 'Frank', 'Finance', 6200),
+(7, 'Grace', 'Finance', 7500),
+(8, 'Henry', 'Finance', 5900),
+(9, 'Ivy', 'Marketing', 4700),
+(10, 'Jack', 'Marketing', 5200);
+
+
+
+Select 
+employee_id,
+employee_name,
+department,
+salary,
+Rank() OVER (ORDER BY Salary DESC) AS Ranking,
+Dense_Rank() OVER (ORDER BY Salary DESC) AS DenseRank,
+PERCENT_RANK() OVER (ORDER BY salary asc) AS PercentRank
+from emp_dept
+ 
+ 
+ CREATE TABLE student_grades (
+    student_id INT,
+    student_name VARCHAR(50),
+    subject VARCHAR(50),
+    grade DECIMAL(5,2)
+);
+
+
+INSERT INTO student_grades (student_id, student_name, subject, grade) VALUES
+(1, 'Alice', 'Math', 85.5),
+(1, 'Alice', 'Science', 92.0),
+(1, 'Alice', 'English', 88.0),
+(2, 'Bob', 'Math', 90.0),
+(2, 'Bob', 'Science', 78.5),
+(2, 'Bob', 'English', 85.0),
+(3, 'Charlie', 'Math', 75.0),
+(3, 'Charlie', 'Science', 80.0),
+(3, 'Charlie', 'English', 95.0),
+(4, 'David', 'Math', 85.5),
+(4, 'David', 'Science', 88.0),
+(4, 'David', 'English', 82.0);
+
+
+
+Select * from student_grades
+
+
+Select student_id,
+student_name,
+subject,
+grade,
+avg(grade) over(partition by subject) as avg_grade,
+min(grade) over (Partition by subject) as min_grade,
+max(grade) over (partition by subject) as max_grades,
+count(grade) over(partition by subject) as count_grades,
+sum(grade) over(partition by student_name) as sum_grades,
+row_number() over(partition by student_name) as rownumber_grades
+from student_grades 
+ 
+
+Select 
+employee_id,
+employee_name,
+department,
+salary,
+Rank() OVER (ORDER BY Salary DESC) AS Ranking,
+Dense_Rank() OVER (ORDER BY Salary DESC) AS DenseRank,
+PERCENT_RANK() OVER (ORDER BY salary asc) AS PercentRank,
+ntile(5) over(order by salary) as ntiler 
+from emp_dept
+
+
+Select 
+employee_id,
+employee_name,
+department,
+salary,
+#lead(salary) over(order by salary) as lead_salary
+lag(salary) over(order by salary desc) as lag_salary
+from emp_dept
+
+
+Select 
+employee_id,
+employee_name,
+department,
+salary,
+#lead(salary) over(order by salary) as lead_salary
+lag(salary) over(partition by department order by salary desc) as lag_salary
+from emp_dept
+
+
+
+

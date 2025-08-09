@@ -1,0 +1,50 @@
+1. Types of Window Functions
+
+    Ranking Functions
+        ROW_NUMBER(): Assigns a unique number to each row.
+        RANK(): Assigns ranks with gaps for ties.
+        DENSE_RANK(): Assigns ranks without gaps.
+        NTILE(n): Divides rows into n buckets.
+        PERCENT_RANK() : The PERCENT_RANK() window function calculates the relative rank of a row as a percentage
+                         between 0 and 1 within its result set or partition
+
+        DENSE_RANK() vs RANK() WINDOW FUNCTION:
+        RANK() window function assigns a rank to each row in the ordered result set. If two or more
+        rows have the same value in the ORDER BY clause, they receive the same rank. However, RANK()
+        skips ranks after ties, leaving gaps in the rank sequence.
+        Like RANK(), it assigns a rank to rows based on the specified ORDER BY clause. However,
+        DENSE_RANK() does not skip ranks. When two or more rows tie, they get the same rank, but the
+        next row gets the immediate subsequent rank.
+
+    Aggregate Functions with OVER()
+        SUM(), AVG(), MIN(), MAX(), COUNT(): Used to compute running totals, moving averages, etc.
+
+    Value Functions
+        LEAD(): Accesses data from the next row.
+        LAG(): Accesses data from the previous row.
+        FIRST_VALUE(), LAST_VALUE(): Gets the first or last value in a window.
+
+2. OVER Clause Components
+
+    PARTITION BY: Divides the result set into partitions.
+    ORDER BY: Orders rows within each partition.
+    ROWS or RANGE: Defines the frame of rows for calculation.
+
+3. Named Windows
+
+    Reuse window definitions across multiple functions using the WINDOW clause.
+
+4. Frame Specifications
+
+    Define how many rows before or after the current row to include:
+
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+        RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
+
+5. Use Cases
+
+    Running totals
+    Moving averages
+    Percentile calculations
+    Comparing current row with previous/next
+    Complex reporting and analytics        
