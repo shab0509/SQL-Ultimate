@@ -220,8 +220,8 @@ employee_id,
 employee_name,
 department,
 salary,
-#lead(salary) over(order by salary) as lead_salary
-lag(salary) over(partition by department order by salary desc) as lag_salary
+lead(salary) over(order by salary) as lead_salary
+#lag(salary) over(partition by department order by salary desc) as lag_salary
 from emp_dept
 
 
