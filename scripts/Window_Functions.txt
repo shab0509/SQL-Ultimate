@@ -38,7 +38,9 @@ This toolkit includes:
     Value Functions
         LEAD(): Accesses data from the next row.
         LAG(): Accesses data from the previous row.
-        FIRST_VALUE(), LAST_VALUE(): Gets the first or last value in a window.
+        FIRST_VALUE(): Gets the first value in a window.
+        LAST_VALUE(): Gets the last value in a window.
+        NTH_VALUE() : Gets the Nth value in a window
 
 2. OVER Clause Components
 
@@ -89,6 +91,8 @@ Value-related       LEAD()                Accesses value of next row
                     LAG()                 Accesses value of previous row
                     FIRST_VALUE()         Gets the first value in the window
                     LAST_VALUE()          Gets the last value in the window
+                    Nth Value             Gets the Nth value in the window  
+
 
 Cumulative/Running SUM(col) OVER(ORDER BY col) Running totals, moving averages
 Totals
@@ -219,7 +223,6 @@ salary,
 #lead(salary) over(order by salary) as lead_salary
 lag(salary) over(partition by department order by salary desc) as lag_salary
 from emp_dept
-
 
 
 Select 
