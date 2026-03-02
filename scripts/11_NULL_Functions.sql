@@ -72,7 +72,10 @@ SELECT
     Score
 FROM customers
 ORDER BY 
-	CASE WHEN Score IS NULL THEN 1 ELSE 0 END,  Score;
+	CASE WHEN Score IS NULL 
+   THEN 1 
+   ELSE 0 
+   END as Score;
 
 /* ==============================================================================
    NULLIF - DIVISION BY ZERO
