@@ -37,7 +37,7 @@ Select count(*) from orders;
    but only for customers who have placed an order */
 
 SELECT   
-   c.customerid,
+    c.customerid,
     c.firstname,
     o.orderid,
     o.sales
